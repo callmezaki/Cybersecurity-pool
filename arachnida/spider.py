@@ -8,6 +8,7 @@ import os
 
 allowed_extensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp']
 visited_urls = set()
+recursive_mode = False
 
 def handle_html(base_url):
     response = req.get(base_url)
@@ -40,6 +41,8 @@ def spider(url, path, depth, current_level=0):
     for img_url in img_urls:
         download_image(img_url, path)
     
+    if not recursive_mode:
+        return
     for page_url in page_urls:
         spider(page_url, path, depth, current_level + 1)
 
@@ -47,16 +50,21 @@ def signal_handler(sig, frame):
     print("\nInterrupted by user. Exiting gracefully.")
     sys.exit(0)
 
-# def handle_args(args):
-#     if args is None:
-#         print("Usage : spider.py [-rlhp] URL")
-#         exit()
+def handle_args(args):
+    global recursive_mode  # Add this line to modify the global variable
+    if args is None:
+        print("Usage : spider.py [-rlhp] URL")
+        exit()
+    if "-r" in args:
+        print("Recursive mode")
+        recursive_mode = True
 
 def main():
     args = sys.argv[1:]
-    if len(args) != 1:
-        print("Usage : spider.py URL")
-        exit()
+    handle_args(args)
+    # if len(args) != 1:
+    #     print("Usage : spider.py URL")
+    #     exit()
 
     url = args[0]
     path = 'images'
