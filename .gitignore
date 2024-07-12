@@ -6,6 +6,12 @@ __pycache__/
 # C extensions
 *.so
 
+.DS_Store
+
+myenv/
+6620ec7544fa3849c3cb27fc_party_wumpus.gif
+arachnida/images
+
 # Distribution / packaging
 .Python
 build/
